@@ -14,7 +14,7 @@ interface PageProps {
 
 // 設定頁面重新渲染的時間，單位是秒，一旦偵測到這個快取過期了，會在背景(server)重新渲染，但是該user會拿到cache的那份(避免render太久)
 // 直到背景重新渲染完畢了，這時候重新整理頁面，就會拿到最新的資料
-export const revalidate = 24 * 60 * 60; // 24小時
+export const revalidate = 86400; // 24小時
 
 export async function generateStaticParams() {
   // 如果回傳空陣列，表示首次進入所有頁面的時候會渲染一次，之後就會暫存起來，其他user進入頁面時都不會重新渲染(ISR)

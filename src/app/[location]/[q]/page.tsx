@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import RestaurantItem from "@/components/RestaurantItem";
 import { getAllTags, locations, searchRestaurants } from "@/data/restaurants";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 
 // 它定義了頁面的參數
@@ -55,6 +56,11 @@ export async function generateMetadata({
   return {
     title: `Top ${results.length} ${qDecoded} near ${locationDecoded} - Updated ${new Date().getFullYear()}`,
     description: `Find the best ${qDecoded} near ${locationDecoded}`,
+    openGraph: {
+      images: results.map((restaurant) => ({
+        url: restaurant.image,
+      })),
+    },
   };
 }
 
@@ -72,6 +78,10 @@ export default async function Page({ params }: PageProps) {
   const locationDecoded = decodeURIComponent(location);
 
   const results = await getRestaurants(qDecoded, locationDecoded);
+
+  if (results.length === 0) {
+    notFound();
+  }
 
   return (
     <div>
